@@ -1,0 +1,72 @@
+<div class="register-container">
+  <h2>Register</h2>
+  <form (ngSubmit)="onSubmit()" #registerForm="ngForm">
+    <div class="form-group">
+      <label for="username">Username *</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        [(ngModel)]="user.username"
+        required
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email *</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        [(ngModel)]="user.email"
+        required
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password *</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        [(ngModel)]="user.password"
+        required
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="first_name">First Name</label>
+      <input
+        type="text"
+        id="first_name"
+        name="first_name"
+        [(ngModel)]="user.first_name"
+        class="form-control"
+      />
+    </div>
+
+    <div class="form-group">
+      <label for="last_name">Last Name</label>
+      <input
+        type="text"
+        id="last_name"
+        name="last_name"
+        [(ngModel)]="user.last_name"
+        class="form-control"
+      />
+    </div>
+
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+
+    <button type="submit" class="submit-btn">Register</button>
+  </form>
+</div>

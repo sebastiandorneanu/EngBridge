@@ -1,0 +1,46 @@
+.main-footer {
+    background: linear-gradient(150deg, #0755a8 0%, #007bff 100%);
+    color: white;
+    text-align: center;
+    padding: 80px 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-top: 50px;
+}
+
+.footer-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.main-footer h2 {
+    font-size: 2.2em;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.main-footer p {
+    font-size: 1.1em;
+    opacity: 0.9;
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+
+.register-button {
+    background-color: white;
+      color: #007bff;
+      border: none;
+      padding: 14px 40px;
+      border-radius: 30px;
+      font-size: 1.1em;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease-in-out;
+}
+
+.register-button:hover {
+    background-color: #f0f0f0;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}

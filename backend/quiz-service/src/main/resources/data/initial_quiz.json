@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "question": "Choose the correct verb form: 'She ___ directly to the manager.'",
+    "options": ["gone", "went", "go", "going"],
+    "correctAnswer": "went",
+    "type": "grammar"
+  },
+  {
+    "id": 2,
+    "question": "Select the synonym for 'Happy'",
+    "options": ["Sad", "Angry", "Joyful", "Bored"],
+    "correctAnswer": "Joyful",
+    "type": "vocabulary"
+  }
+]

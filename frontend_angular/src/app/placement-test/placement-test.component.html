@@ -1,0 +1,30 @@
+<div class="test-container">
+  <div *ngIf="!finished" class="question-card">
+    <h2>Question {{ currentQuestionIndex + 1 }} / {{ questions.length }}</h2>
+    <p class="question-text">{{ questions[currentQuestionIndex].text }}</p>
+    
+    <div class="options-grid">
+      <button *ngFor="let option of questions[currentQuestionIndex].options; let i = index" 
+              class="option-btn" 
+              [class.selected]="selectedOption === i"
+              (click)="selectOption(i)">
+        {{ option }}
+      </button>
+    </div>
+
+    <button class="next-btn" [disabled]="selectedOption === null" (click)="nextQuestion()">
+      {{ currentQuestionIndex === questions.length - 1 ? 'Finish' : 'Next' }}
+    </button>
+  </div>
+
+  <div *ngIf="finished" class="result-card">
+    <h2>Test Completed!</h2>
+    <p>Your Score: {{ score }} / {{ questions.length }}</p>
+    <div class="level-result">
+      <p *ngIf="score > 25">Excellent! You unlocked Level C1.</p>
+      <p *ngIf="score > 15 && score <= 25">Great job! You unlocked Level B2.</p>
+      <p *ngIf="score <= 15">Good start! You are placed in Level B1.</p>
+    </div>
+    <button class="home-btn" (click)="goHome()">Return to Home</button>
+  </div>
+</div>

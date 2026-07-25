@@ -1,0 +1,160 @@
+<div class="lesson-container">
+  <aside class="lesson-sidebar">
+    <h3>Course content </h3>
+    <div>
+      <a *ngFor="let section of sections"  href="/{{levelId}}/{{courseId}}/{{section.id}}"
+         class="section-tab">{{ section.type }}</a>
+    </div>
+
+    <div class="sidebar-footer-nav">
+      <a href="/courses-learn/{{levelId}}" class="btn-all-courses">
+        <span class="arrow">←</span> All Courses
+      </a>
+    </div>
+  </aside>
+
+  <main class="exercise-area">
+<!--shows up after user submits a section-->
+    <div *ngIf="isSubmitted" class="score-summary-card">
+      <div class="score-circle">
+        <span class="score-value">{{ finalScore }}</span>
+        <span class="score-max">/ 5</span>
+      </div>
+      <div class="score-text">
+        <h2>Section Completed!</h2>
+        <p>You earned <strong>{{ finalScore }}</strong> points out of 5.</p>
+      </div>
+    </div>
+
+    <div *ngIf="activeSection">
+      <h1>{{ activeSection.type }}</h1>
+      <hr>
+
+      <div *ngIf="exercises.length === 0" style="padding: 20px; color: gray; text-align: center; border: 2px dashed #ccc;">
+        <p>There is no exercise for section "{{ activeSection.type }}" (ID: {{ activeSection.id }}).</p>
+        <p>Check database for exercises_section_fk = {{ activeSection.id }}</p>
+      </div>
+
+      <div *ngFor="let ex of exercises" class="exercise-card">
+
+<!--        Exercise type: Text-->
+        <div *ngIf="ex.type === 'Text'" class="text-exercise">
+          <h3 *ngIf="ex.parsedContent.title">{{ ex.parsedContent.title }}</h3>
+          <p class="instruction"><em>{{ ex.parsedContent.instruction }}</em></p>
+          <div class="content-body">
+            {{ ex.parsedContent.text }}
+          </div>
+        </div>
+
+<!--        Exercise type: Video-->
+        <div *ngIf="ex.type === 'Video'" class="text-exercise">
+          <h3 *ngIf="ex.parsedContent.title" class="video-title">
+            {{ ex.parsedContent.title }}
+          </h3>
+
+          <p class="instruction">
+            <em>{{ ex.parsedContent.instruction || 'Watch the video and answer the question:' }}</em>
+          </p>
+
+          <div class="video-player-wrapper">
+            <iframe
+              class="video-element"
+              [src]="ex.parsedContent.videoUrl | safe"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+        <div *ngIf="ex.type === 'True_False'" class="options-container">
+          <p class="instruction"><em>Decide if the statement is true or false:</em></p>
+          <div class="question-block">
+            <h3 class="question-text">{{ ex.parsedContent.question }}</h3>
+            <div class="options-list">
+              <div *ngFor="let opt of ['True', 'False']"
+                   class="option-card"
+                   [class.selected]="ex.userAnswer === opt"
+                   [class.correct]="ex.submitted && opt === ex.parsedContent.answer"
+                   [class.incorrect]="ex.submitted && ex.userAnswer === opt && ex.userAnswer !== ex.parsedContent.answer"
+                   (click)="!ex.submitted && (ex.userAnswer = opt)">
+                <div class="option-content">{{ opt }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+<!--        Exercise type: Option-->
+        <div *ngIf="ex.type === 'Option'" class="options-container">
+          <p class="instruction"><em>{{ ex.parsedContent.instruction || 'Choose the correct answer:' }}</em></p>
+
+          <div class="question-block">
+            <h3 class="question-text">
+              <span class="q-number">{{ ex.orderNum - 1}}</span> {{ ex.parsedContent.question }}
+            </h3>
+
+            <div class="options-list">
+              <div *ngFor="let opt of ex.parsedContent.options; let optIdx = index"
+                   class="option-card"
+                   [class.selected]="ex.userAnswer === ['A', 'B', 'C', 'D'][optIdx]"
+                   [class.correct]="ex.submitted && ['A', 'B', 'C', 'D'][optIdx] === ex.parsedContent.answer"
+                   [class.incorrect]="ex.submitted && ex.userAnswer === ['A', 'B', 'C', 'D'][optIdx] && ex.userAnswer !== ex.parsedContent.answer"
+                   (click)="!ex.submitted && (ex.userAnswer = ['A', 'B', 'C', 'D'][optIdx])">
+                <div class="option-letter">{{ ['A', 'B', 'C', 'D'][optIdx] }}.</div>
+                <div class="option-content">{{ opt.split(': ')[1] || opt }}</div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+<!--        Exercise type: Fill the gaps-->
+        <div *ngIf="ex.type === 'FillGaps'" class="exercise-card fill-gaps-container">
+          <h3 class="exercise-title">{{ ex.parsedContent.title }}</h3>
+          <p class="instruction"><em>{{ ex.parsedContent.instruction }}</em></p>
+
+          <div class="gap-text-content">
+            {{ ex.parsedContent.text }}
+          </div>
+
+          <hr class="divider">
+
+          <div class="gaps-selection-grid">
+            <div *ngFor="let gapKey of getObjectKeys(ex.parsedContent.requirements)" class="gap-selection-row">
+              <span class="gap-number">({{ gapKey }})</span>
+
+              <div class="gap-buttons">
+                <button *ngFor="let option of ex.parsedContent.requirements[gapKey]"
+                        class="gap-btn"
+                        [class.selected]="ex.userAnswers && ex.userAnswers[gapKey] === option"
+                        [class.correct]="ex.submitted && option === ex.parsedContent.answer_key[gapKey]"
+                        [class.incorrect]="ex.submitted && ex.userAnswers && ex.userAnswers[gapKey] === option && option !== ex.parsedContent.answer_key[gapKey]"
+                        (click)="!ex.submitted && selectGapAnswer(ex, gapKey, option)">
+                  {{ option }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+<!--      submit button-->
+    </div>
+   <div class="lesson-footer">
+    <hr class="footer-divider">
+    <div class="submit-container">
+      <div class="completion-info">
+        <h4>Ready?</h4>
+        <p>Check your answers before submitting this section.</p>
+      </div>
+      <button class="btn-submit-lesson" (click)="submitEntireSection()">
+        <span class="btn-text">Submit</span>
+      </button>
+    </div>
+  </div>
+
+  </main>
+</div>
+

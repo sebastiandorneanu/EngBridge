@@ -1,0 +1,19 @@
+<div class="login-container">
+  <div class="login-card">
+    <form (ngSubmit)="onLogin()">
+      <h2>Login</h2>
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" [(ngModel)]="loginData.username" name="username" required />
+      </div>
+      <div class="form-group">
+        <label>Parolă</label>
+        <input type="password" [(ngModel)]="loginData.password" name="password" required />
+      </div>
+      <button type="submit" class="login-button">Autentificare</button>
+      <p style="margin-top: 15px; text-align: center;">
+        Not having an account? <a href="/register" style="color: #007bff; text-decoration: none;">Sign up</a>
+      </p>
+    </form>
+  </div>
+</div>

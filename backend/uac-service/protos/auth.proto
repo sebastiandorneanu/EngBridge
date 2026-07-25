@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc Register (RegisterRequest) returns (RegisterResponse) {}
+  rpc Login (LoginRequest) returns (LoginResponse) {}
+  rpc ValidateToken (ValidateRequest) returns (ValidateResponse) {}
+  rpc InvalidateToken (InvalidateRequest) returns (InvalidateResponse) {}
+  rpc CreateUser (CreateUserRequest) returns (CreateUserResponse) {}
+  rpc Update (UpdateRequest) returns (UpdateResponse) {}
+  rpc Delete (DeleteRequest) returns (DeleteResponse) {}
+  rpc getAllUsers (Empty) returns (UserList) {}
+  rpc getUser (UserIdRequest) returns (UserResponse) {}
+}
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+
+  string first_name = 4;  
+  string last_name = 5;   
+  repeated string social_media = 6;
+}
+
+message RegisterResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string token = 1;
+  optional string error = 2;
+}
+message ValidateRequest {
+  string token = 1;
+  
+}
+message ValidateResponse {
+  bool valid = 1;
+  string userId = 2;
+  string role = 3;
+  optional string error = 4; 
+}
+
+message InvalidateRequest {
+  string token = 1;
+}
+message InvalidateResponse {
+  bool success = 1;
+  string message = 2;
+  optional string error = 3;
+}
+
+message CreateUserRequest {
+  string username = 1;
+  string password = 2;
+  string email = 3;
+  string role = 4;
+
+  string first_name = 5; 
+  string last_name = 7;   
+  repeated string social_media = 8;
+}
+
+message CreateUserResponse {
+  bool success = 1;
+  string message = 2;
+  int32 uid = 3;
+  optional string error = 4;
+}
+
+message UpdateRequest {
+  int32 uid = 1;
+  string username = 2;
+  string password = 3;
+  string role = 4;
+}
+
+message UpdateResponse {
+  bool success = 1;
+  string message = 2;
+  optional string error = 3;
+}
+
+message DeleteRequest {
+  int32 uid = 1;
+}
+
+message DeleteResponse {
+  bool success = 1;
+  string message = 2;
+  optional string error = 3;
+}
+
+message Empty {
+}
+
+message UserIdRequest {
+  int32 uid = 1;
+}
+
+message UserResponse {
+  int32 uid = 1;
+  string username = 2;
+  string email = 3;
+  string role = 4;
+  optional string error = 5;
+}
+
+message UserInfo {
+  int32 uid = 1;
+  string username = 2;
+  string email = 3;
+  string role = 4;
+}
+
+message UserList {
+  repeated UserInfo users = 1;
+  optional string error = 2;
+}

@@ -1,0 +1,47 @@
+<!--page of a logged-in user learning(when they press header->Courses->level-->
+
+<div class="course-page-content">
+  <section class="course-hero">
+    <div class="container">
+      <span class="badge">{{ levelId === '1' ? 'Intermediate Level' : (levelId === '2' ? 'Upper Intermediate Level' : 'Advanced Level') }}</span>
+      <h1>{{ levelId === '1' ? 'B1 Preliminary' : (levelId === '2' ? 'B2 First' : 'C1 Advanced') }}</h1>
+      <p class="subtitle">Master your skills with structured modules.</p>
+    </div>
+  </section>
+
+  <div class="course-details-grid">
+    <div *ngFor="let course of courses" class="details-card">
+
+      <div class="info-item" style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+        <img src="assets/focus_icon.png"
+             alt="Course Icon"
+             style="width: 45px; height: 45px; object-fit: contain;">
+        <div>
+          <h2 style="margin: 0; font-size: 1.5rem;">Course {{ course.orderNum }}</h2>
+          <div style="color: #007bff; font-weight: 600;">Ready to start</div>
+        </div>
+      </div>
+
+      <ul class="bullet-list">
+        <li>Reading</li>
+        <li>Speaking</li>
+        <li>Writing</li>
+        <li>Listening</li>
+      </ul>
+
+<!--      <a href="/courses-learn-view/{{levelId}}/{{course.id}}" class="btn-start">-->
+<!--        Start Lesson-->
+<!--      </a>-->
+      <a href="javascript:void(0)" (click)="startLesson(course.id)" class="btn-start">
+        Start Lesson
+      </a>
+
+      <button (click)="resetProgress(course.id)" class="btn-reset">
+        Reset
+      </button>
+
+    </div> <div *ngIf="courses.length === 0" class="details-card" style="grid-column: 1 / -1; text-align: center;">
+    <p>Loading your study plan...</p>
+  </div>
+  </div>
+</div>

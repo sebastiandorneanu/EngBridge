@@ -1,0 +1,120 @@
+<section class="hero-section">
+  <div class="hero-content">
+    <h1>Master Cambridge English Exams</h1>
+    <p>Your bridge to English proficiency. Prepare for B1, B2, and C1 Cambridge exams with expert guidance and comprehensive materials.</p>
+    <a href="#courses-list" class="explore-button">Explore Courses</a>
+  </div>
+</section>
+
+
+<section class="features-section">
+  <div class="feature-card">
+    <div class="icon-circle">
+      <span class="feature-icon"><img src="../../assets/focus_icon.png" alt="Focus icon" class="feature-card-icon"></span>
+    </div>
+    <h2>Exam-Focused</h2>
+    <p>Comprehensive preparation aligned with Cambridge exam requirements.</p>
+  </div>
+
+  <div class="feature-card">
+    <div class="icon-circle">
+      <img src="../../assets/practice_icon.png" alt="Practice icon" class="feature-card-icon">
+    </div>
+    <h2>Practice Based</h2>
+    <p>Practice with hundreds of quizzes covering all exam components.</p>
+  </div>
+
+  <div class="feature-card">
+    <div class="icon-circle">
+      <span class="feature-icon"><img src="../../assets/result_icon.png" alt="Result icon" class="feature-card-icon"></span>
+    </div>
+    <h2>Proven Results</h2>
+    <p>High success rates with our structured learning approach.</p>
+  </div>
+</section>
+
+<section class="testimonials-section">
+
+  <div class="container">
+    <h2 class="section-title">What Our Students Say</h2>
+    <p class="section-subtitle">Real stories from students who reached their goals with EngBridge.</p>
+
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card">
+        <p>"I managed to pass the B2 First exam with a much higher score than I expected. The course materials are extremely well-structured!"</p>
+        <div class="blue-accent-bar"></div>
+        <div class="student-info">
+          <span>B2 Student</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <p>"The platform is very intuitive, and the practice tests are almost identical to the official Cambridge exam papers. Highly recommended!"</p>
+        <div class="blue-accent-bar"></div>
+        <div class="student-info">
+          <span>C1 Student</span>
+        </div>
+      </div>
+
+      <div class="testimonial-card">
+        <p>"EngBridge helped me overcome my exam nerves. The practical exercises gave me the confidence I needed to succeed."</p>
+        <div class="blue-accent-bar"></div>
+        <div class="student-info">
+          <span>B1 Student</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="courses-list" class="home-courses-list">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Available Courses</h2>
+      <p class="section-subtitle">Comprehensive preparation for Cambridge exams</p>
+    </div>
+
+    <div class="courses-stack">
+
+      <div class="course-card-long b1-border">
+        <div class="card-content">
+          <div class="badge b1-badge">Level: B1 Preliminary</div>
+          <h3>B1 Preliminary (PET)</h3>
+          <p>The perfect starting point for your certification. Learn practical English for everyday situations and build a strong foundation.</p>
+        </div>
+        <div class="card-action">
+          <button [routerLink]="['/course-b1']" class="btn-primary">View Details</button>
+        </div>
+      </div>
+
+      <div class="course-card-long b2-border" [class.locked]="isLoggedIn && currentLevel < 2">
+        <div class="card-content">
+          <div class="badge b2-badge">Level: B2 First</div>
+          <h3>B2 First (FCE) <span *ngIf="isLoggedIn && currentLevel < 2">🔒</span></h3>
+          <p>Our most popular choice. Prove you have the language skills to live and work independently in an English-speaking country.</p>
+        </div>
+        <div class="card-action">
+          <button [routerLink]="['/course-b2']" [disabled]="isLoggedIn && currentLevel < 2" class="btn-primary">
+            {{ isLoggedIn && currentLevel < 2 ? 'Locked' : 'View Details' }}
+          </button>
+        </div>
+      </div>
+
+      <div class="course-card-long c1-border" [class.locked]="isLoggedIn && currentLevel < 3">
+        <div class="card-content">
+          <div class="badge c1-badge">Level: C1 Advanced</div>
+          <h3>C1 Advanced (CAE) <span *ngIf="isLoggedIn && currentLevel < 3">🔒</span></h3>
+          <p>Master the language at an academic level. This qualification is recognized by thousands of universities and employers worldwide.</p>
+        </div>
+        <div class="card-action">
+          <button [routerLink]="['/course-c1']" [disabled]="isLoggedIn && currentLevel < 3" class="btn-primary">
+            {{ isLoggedIn && currentLevel < 3 ? 'Locked' : 'View Details' }}
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,104 @@
+<div class="dashboard-header">
+  <h2>Admin Dashboard</h2>
+  <div class="user-info">
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</div>
+
+<!-- Statistics Overview -->
+<div class="stats-section">
+  <div class="stat-card">
+    <div class="stat-content">
+      <h3>{{ users.length }}</h3>
+      <p>Total Students</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-content">
+      <h3>{{ getStudentCount() }}</h3>
+      <p>Active Learners</p>
+    </div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-content">
+      <h3>100%</h3>
+      <p>Success Rate</p>
+    </div>
+  </div>
+</div>
+<!-- Tab Navigation -->
+<div class="tab-navigation">
+  <button class="tab-btn" [class.active]="activeTab === 'users'" (click)="switchTab('users')">
+    Users Management
+  </button>
+
+</div>
+
+<!-- Users Management Section -->
+<div class="users-section" *ngIf="activeTab === 'users'">
+  <div class="section-header">
+    <h3>Users Management</h3>
+    <button class="create-btn" (click)="openCreateUser()">
+      <span class="btn-icon">+</span> Create New User
+    </button>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-message">Loading users...</div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && users.length === 0" class="empty-state">
+    <p>No users found. Create your first user!</p>
+  </div>
+
+  <!-- Users List -->
+  <ul *ngIf="!loading && users.length > 0" class="users-list">
+    <li *ngFor="let user of users" class="user-item">
+      <div class="user-info-column">
+        <span class="user-name">{{ user.username }}</span>
+        <span class="user-email">{{ user.email }}</span>
+      </div>
+      <span class="user-role" [ngClass]="getRoleClass(user.role)">{{ user.role }}</span>
+      <div class="user-actions">
+        <button class="action-btn edit-btn" (click)="editUser(user)">Edit</button>
+        <button class="action-btn delete-btn" (click)="confirmDelete(user)">Delete</button>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<!-- Courses Management Section -->
+<!--TO BE implemented by Sebastian-->
+
+<!-- Success Message -->
+<div *ngIf="successMessage" class="success-message">
+  {{ successMessage }}
+</div>
+
+<!-- Error Message -->
+<div *ngIf="errorMessage" class="error-message">
+  {{ errorMessage }}
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div *ngIf="showDeleteConfirm" class="modal-overlay" (click)="cancelDelete()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <h3>Confirm Delete</h3>
+    <p>
+      Are you sure you want to delete user <strong>{{ userToDelete?.username }}</strong
+      >?
+    </p>
+    <p class="warning-text">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" (click)="cancelDelete()">Cancel</button>
+      <button class="btn-confirm-delete" (click)="deleteUser(userToDelete!.uid!)">Delete</button>
+    </div>
+  </div>
+</div>
+<app-user-form
+  [isVisible]="showUserForm"
+  [user]="selectedUser"
+  (onClose)="showUserForm = false"
+  (onSave)="handleSaveUser($event)"
+>
+</app-user-form>

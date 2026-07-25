@@ -1,0 +1,14 @@
+<footer class="main-footer">
+  <div class="footer-content">
+    <ng-container *ngIf="!(isLoggedIn$ | async)">
+      <h2>Ready to Start Your Journey?</h2>
+      <p>Join thousands of students who have successfully prepared for Cambridge exams with EngBridge</p>
+      <a href="#" class="register-button">Register Now</a>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn$ | async">
+      <h2>Happy learning!</h2>
+      <p>Keep up the great work on your Cambridge preparation.</p>
+    </ng-container>
+  </div>
+</footer>

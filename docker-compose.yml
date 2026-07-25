@@ -1,0 +1,93 @@
+services:
+  mysql:
+    build:
+      context: ./mysql
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: always
+
+  uac-service:
+    build:
+      context: backend/uac-service
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_HOST: mysql
+      MYSQL_DATABASE: uac_db
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "50051:50051"
+    depends_on:
+      - mysql
+    restart: always
+
+  content-service:
+    build:
+      context: .
+      dockerfile: backend/content-service/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/engbridge
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_PORT: 6379
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mysql
+      - redis
+    restart: always
+
+  quiz-service:
+    build:
+      context: .
+      dockerfile: backend/quiz-service/Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/engbridge
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    ports:
+      - "8082:8082"
+    depends_on:
+      - mysql
+    restart: always
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: backend/api-gateway/Dockerfile
+    environment:
+      UAC_GRPC_HOST: uac-service
+      SERVICE_CONTENT_URL: http://content-service:8081
+      SERVICE_QUIZ_URL: http://quiz-service:8082
+    ports:
+      - "8086:8086"
+    depends_on:
+      - uac-service
+      - content-service
+      - quiz-service
+    restart: always
+
+  frontend:
+    build:
+      context: frontend_angular
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+  redis:
+    image: redis:7.2-alpine
+    container_name: engbridge-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    restart: always
+volumes:
+  mysql_data:
+  redis_data:
